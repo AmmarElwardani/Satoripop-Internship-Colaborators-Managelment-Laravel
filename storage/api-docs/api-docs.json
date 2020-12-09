@@ -1,0 +1,906 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "HR Management App API Documentation",
+        "contact": {
+            "email": "ammarelw@gmail.com"
+        },
+        "version": "0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000"
+        }
+    ],
+    "paths": {
+        "/api/manageCollaborator/{user_id}/evaluation": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/user_id"
+                }
+            ]
+        },
+        "/api/manageCollaborator/{user_id}/evaluation/{eval_id}": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/user_id"
+                },
+                {
+                    "$ref": "#/components/parameters/eval_id"
+                }
+            ]
+        },
+        "/api/manageCollaborator/{user_id}/leaves": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/user_id"
+                }
+            ]
+        },
+        "/api/manageCollaborator/{user_id}/leaves/{leave_id}": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/user_id"
+                },
+                {
+                    "$ref": "#/components/parameters/leave_id"
+                }
+            ]
+        },
+        "/api/manageCollaborator/{user_id}/skills": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/user_id"
+                }
+            ]
+        },
+        "/api/manageCollaborator/{user_id}/skills/{skill_id}": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/user_id"
+                },
+                {
+                    "$ref": "#/components/parameters/skill_id"
+                }
+            ]
+        },
+        "/api/auth/signin": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login",
+                "description": "Authenticate a user with email and password",
+                "operationId": "login",
+                "requestBody": {
+                    "description": "User credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "employee@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "employee"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Logged in",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9zaWduaW4iLCJpYXQiOjE2MDcyMDc1MTQsImV4cCI6MjIwNzIwNzQ1NCwibmJmIjoxNjA3MjA3NTE0LCJqdGkiOiJoTk9wbk91WUNzTU1PSTVCIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.LnjcvQDOegH5XlJTpXNJXyl4nye1F5mac-X8eoYrflk"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer",
+                                            "example": 86400
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The provided credentials are incorrect."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/invalid-data"
+                    }
+                }
+            }
+        },
+        "/api/auth/signout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout",
+                "description": "Logout current user",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "Logout response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "example": "Successfully logged out"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/auth/currentuser": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User informations",
+                "description": "Get current user informations",
+                "operationId": "me",
+                "responses": {
+                    "200": {
+                        "description": "User information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/user"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/auth/user": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User informations",
+                "description": "Get current user informations",
+                "operationId": "me",
+                "responses": {
+                    "200": {
+                        "description": "User information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/user"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/addEvaluation": {
+            "post": {
+                "tags": [
+                    "evaluations"
+                ],
+                "summary": "Add a new evaluation to a user",
+                "description": "Add a new evaluation to a user",
+                "operationId": "App\\Http\\Controllers\\EvaluationController::store",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/evaluationsRequestBody"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/success"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/evaluation/show/{user_id}": {
+            "get": {
+                "tags": [
+                    "evaluations"
+                ],
+                "summary": "Get user evaluations",
+                "description": "Get all user evaluations",
+                "operationId": "App\\Http\\Controllers\\EvaluationController::show",
+                "responses": {
+                    "200": {
+                        "description": "User evaluations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/evaluation"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/updateEvaluation/{user_id}/{eval_id}": {
+            "put": {
+                "tags": [
+                    "evaluations"
+                ],
+                "summary": "Update user evaluation",
+                "description": "Update specified user evaluation",
+                "operationId": "App\\Http\\Controllers\\EvaluationController::update",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/evaluationsRequestBody"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/success"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/deleteEvaluation/{eval_id}": {
+            "delete": {
+                "tags": [
+                    "evaluations"
+                ],
+                "summary": "Delete a specified evaluation from storage",
+                "description": "Delete a specified evaluation from storage",
+                "operationId": "App\\Http\\Controllers\\EvaluationController::destroy",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/evaluationsRequestBody"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/success"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/addLeave": {
+            "post": {
+                "tags": [
+                    "Leaves"
+                ],
+                "summary": "Add a new leave to a user",
+                "description": "Add a new leave to a user",
+                "operationId": "App\\Http\\Controllers\\LeaveController::store",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/leaveRequestBody"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/success"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/leave/show/{user_id}": {
+            "get": {
+                "tags": [
+                    "Leaves"
+                ],
+                "summary": "Get user leaves",
+                "description": "Get all user leaves",
+                "operationId": "App\\Http\\Controllers\\LeaveController::show",
+                "responses": {
+                    "200": {
+                        "description": "User leaves",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/leave"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/updateLeave/{user_id}/{leave_id}": {
+            "put": {
+                "tags": [
+                    "Leaves"
+                ],
+                "summary": "Update user leave",
+                "description": "Update specified user leave",
+                "operationId": "App\\Http\\Controllers\\LeaveController::update",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/leaveRequestBody"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/success"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/deleteLeave/{leave_id}": {
+            "delete": {
+                "tags": [
+                    "Leaves"
+                ],
+                "summary": "Delete a specified leave from storage",
+                "description": "Delete a specified leave from storage",
+                "operationId": "App\\Http\\Controllers\\LeaveController::destroy",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/leaveRequestBody"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/success"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/addSkill": {
+            "post": {
+                "tags": [
+                    "Skills"
+                ],
+                "summary": "Assign a skill to a user",
+                "description": "Assign a skill to a user",
+                "operationId": "App\\Http\\Controllers\\SkillController::store",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/skillRequestBody"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/success"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/invalid-data"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/skill/show/{user_id}": {
+            "get": {
+                "tags": [
+                    "Skills"
+                ],
+                "summary": "User skills",
+                "description": "Get user skills",
+                "operationId": "App\\Http\\Controllers\\SkillController::show",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/skillRequestBody"
+                },
+                "responses": {
+                    "200": {
+                        "description": "User skills list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/skill"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/invalid-data"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/updateSkill/{user_id}/{skill_id}": {
+            "put": {
+                "tags": [
+                    "Skills"
+                ],
+                "summary": "Edit user skill",
+                "description": "Update a skill for a user",
+                "operationId": "App\\Http\\Controllers\\SkillController::update",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/skillRequestBody"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/success"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/invalid-data"
+                    }
+                }
+            }
+        },
+        "/api/manageCollaborator/deleteSkill/{skill_id}": {
+            "delete": {
+                "tags": [
+                    "Skills"
+                ],
+                "summary": "Revoke a skill from a user",
+                "description": "Revoke a skill to a user and delete it if no user still have it",
+                "operationId": "App\\Http\\Controllers\\SkillController::destroy",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/success"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "evaluation": {
+                "title": "evaluation",
+                "description": "Evaluation object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "example": "Monthly test"
+                    },
+                    "evalDate": {
+                        "type": "string",
+                        "format": "dateTime",
+                        "example": "2020-10-05"
+                    },
+                    "result": {
+                        "type": "string",
+                        "example": "passed"
+                    }
+                },
+                "type": "object"
+            },
+            "leave": {
+                "title": "Leave",
+                "description": "Leave object",
+                "properties": {
+                    "startingFromDate": {
+                        "type": "string",
+                        "format": "dateTime",
+                        "example": "2020-10-05"
+                    },
+                    "nbDays": {
+                        "type": "integer",
+                        "example": 3
+                    }
+                },
+                "type": "object"
+            },
+            "skill": {
+                "title": "Skill",
+                "description": "Skill object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Laravel"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "a backend framework"
+                    },
+                    "level": {
+                        "enum": [
+                            "beginner",
+                            "intermediate",
+                            "advanced",
+                            "expert"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "user": {
+                "title": "User",
+                "description": "User object",
+                "properties": {
+                    "firstName": {
+                        "type": "string",
+                        "example": "Ammar"
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "example": "El-wardani"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "ammarelw@gmail.com"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "55123456"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "format": "dateTime",
+                        "example": "1997-05-05"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "boolean",
+                        "example": "male=1/female=0"
+                    },
+                    "civilStatus": {
+                        "type": "string",
+                        "example": "single"
+                    },
+                    "nCin": {
+                        "type": "string"
+                    },
+                    "nCnss": {
+                        "type": "string"
+                    },
+                    "nPassport": {
+                        "type": "string"
+                    },
+                    "nationality": {
+                        "type": "string",
+                        "example": "Tunisian"
+                    },
+                    "school": {
+                        "type": "string",
+                        "example": "Higher institute of applied science and technology of sousse"
+                    },
+                    "history": {
+                        "type": "text"
+                    },
+                    "source": {
+                        "type": "string"
+                    },
+                    "position": {
+                        "enum": [
+                            "web developer",
+                            "frontEnd Developer",
+                            "backEnd Developer",
+                            "mobile Developer",
+                            "IT",
+                            "network Security",
+                            "sales"
+                        ]
+                    },
+                    "experienceLevel": {
+                        "type": "string"
+                    },
+                    "hiringDate": {
+                        "type": "string",
+                        "format": "dateTime"
+                    },
+                    "endOfContractDate": {
+                        "type": "string",
+                        "format": "dateTime"
+                    },
+                    "contractType": {
+                        "type": "string",
+                        "enum": [
+                            "option 1",
+                            "option 2",
+                            "option 3"
+                        ]
+                    },
+                    "department_id": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "success": {
+                "description": "Successful operation",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    }
+                }
+            },
+            "unauthorized": {
+                "description": "Forbidden",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "This action is unauthorized."
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "unauthenticated": {
+                "description": "Authentication is required",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Unauthenticated."
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "invalid-data": {
+                "description": "Invalid data",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "The given data was invalid."
+                                },
+                                "error": {
+                                    "properties": {
+                                        "email": {
+                                            "type": "string",
+                                            "example": "The email must be a valid email address."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "user_id": {
+                "name": "user_id",
+                "in": "path",
+                "description": "The ID of the user",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            },
+            "eval_id": {
+                "name": "eval_id",
+                "in": "path",
+                "description": "Evaluation ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            },
+            "leave_id": {
+                "name": "leave_id",
+                "in": "path",
+                "description": "Leave ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            },
+            "skill_id": {
+                "name": "skill_id",
+                "in": "path",
+                "description": "Skill ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "requestBodies": {
+            "collaboratorRequestBody": {
+                "description": "Collaborator request body",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/user"
+                        }
+                    }
+                }
+            },
+            "searchRequestBody": {
+                "description": "Search",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "search_text": {
+                                    "type": "string"
+                                },
+                                "items_per_page": {
+                                    "type": "integer",
+                                    "example": 10
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "evaluationsRequestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/evaluation"
+                        }
+                    }
+                }
+            },
+            "leaveRequestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/leave"
+                        }
+                    }
+                }
+            },
+            "skillRequestBody": {
+                "description": "Skill request",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/skill"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Authentication routes"
+        },
+        {
+            "name": "User",
+            "description": "Manage collaborator CRUD"
+        },
+        {
+            "name": "manageCollaborator",
+            "description": "Manage skills, evaluations and leaves routes"
+        }
+    ],
+    "security": [
+        []
+    ]
+}
